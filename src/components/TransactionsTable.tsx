@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, } from "react";
 import {
   FiVideo,
   FiHome,
@@ -30,8 +30,8 @@ const STATUS_CONFIG = {
 
 const TYPE_CONFIG = {
   Telemedicine: { icon: FiVideo, cls: "bg-violet-50 text-violet-700" },
-  "In clinic":  { icon: FiHome,  cls: "bg-rose-50 text-rose-700" },
-  Insurance:    { icon: FiShield, cls: "bg-green-50 text-green-700" },
+  "In clinic": { icon: FiHome, cls: "bg-rose-50 text-rose-700" },
+  Insurance: { icon: FiShield, cls: "bg-green-50 text-green-700" },
 };
 
 const AVATAR_COLORS = [
@@ -43,72 +43,143 @@ const AVATAR_COLORS = [
 ];
 
 const ROWS = [
-  { type: "Telemedicine", sendDate: "12/12/24", name: "Rachel Mayers",    amount: "$348.65", recipient: "123456 American Family Insurance", dueDate: "12/12/24", status: "Requested" },
-  { type: "In clinic",    sendDate: "11/12/24", name: "Samantha Williams", amount: "$348.65", recipient: "Samantha Williams",                dueDate: "—",        status: "Paid" },
-  { type: "Insurance",    sendDate: "12/12/24", name: "Amy White",         amount: "$348.65", recipient: "123324 GEICO",                     dueDate: "12/12/24", status: "Sent" },
-  { type: "In clinic",    sendDate: "11/12/24", name: "Tyler Young",       amount: "$348.65", recipient: "123456 American Family Insurance", dueDate: "—",        status: "Paid" },
-  { type: "Telemedicine", sendDate: "12/12/24", name: "Amy White",         amount: "$348.65", recipient: "123324 GEICO",                     dueDate: "12/12/24", status: "Paid" },
-  { type: "Telemedicine", sendDate: "12/12/24", name: "Rachel Mayers",     amount: "$348.65", recipient: "123456 American Family Insurance", dueDate: "12/10/24", status: "Requested" },
-  { type: "Insurance",    sendDate: "12/12/24", name: "Rachel Mayers",     amount: "$348.65", recipient: "123456 American Family Insurance", dueDate: "12/12/24", status: "Paid" },
+  {
+    type: "Telemedicine",
+    sendDate: "12/12/24",
+    name: "Rachel Mayers",
+    amount: "$348.65",
+    recipient: "123456 American Family Insurance",
+    dueDate: "12/12/24",
+    status: "Requested",
+  },
+  {
+    type: "In clinic",
+    sendDate: "11/12/24",
+    name: "Samantha Williams",
+    amount: "$348.65",
+    recipient: "Samantha Williams",
+    dueDate: "—",
+    status: "Paid",
+  },
+  {
+    type: "Insurance",
+    sendDate: "12/12/24",
+    name: "Amy White",
+    amount: "$348.65",
+    recipient: "123324 GEICO",
+    dueDate: "12/12/24",
+    status: "Sent",
+  },
+  {
+    type: "In clinic",
+    sendDate: "11/12/24",
+    name: "Tyler Young",
+    amount: "$348.65",
+    recipient: "123456 American Family Insurance",
+    dueDate: "—",
+    status: "Paid",
+  },
+  {
+    type: "Telemedicine",
+    sendDate: "12/12/24",
+    name: "Amy White",
+    amount: "$348.65",
+    recipient: "123324 GEICO",
+    dueDate: "12/12/24",
+    status: "Paid",
+  },
+  {
+    type: "Telemedicine",
+    sendDate: "12/12/24",
+    name: "Rachel Mayers",
+    amount: "$348.65",
+    recipient: "123456 American Family Insurance",
+    dueDate: "12/10/24",
+    status: "Requested",
+  },
+  {
+    type: "Insurance",
+    sendDate: "12/12/24",
+    name: "Rachel Mayers",
+    amount: "$348.65",
+    recipient: "123456 American Family Insurance",
+    dueDate: "12/12/24",
+    status: "Paid",
+  },
 ];
 
 const HEADERS = [
-  { key: "type",      label: "Type" },
-  { key: "sendDate",  label: "Send date" },
-  { key: "name",      label: "Name" },
-  { key: "amount",    label: "Amount" },
+  { key: "type", label: "Type" },
+  { key: "sendDate", label: "Send date" },
+  { key: "name", label: "Name" },
+  { key: "amount", label: "Amount" },
   { key: "recipient", label: "Recipient" },
-  { key: "dueDate",   label: "Due date" },
-  { key: "status",    label: "Status" },
+  { key: "dueDate", label: "Due date" },
+  { key: "status", label: "Status" },
 ];
 
-function Avatar({ name }) {
-  const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+function Avatar({ name }: { name: string }) {
+  const initials = name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
   const cls = AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
   return (
-    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${cls}`}>
+    <div
+      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${cls}`}
+    >
       {initials}
     </div>
   );
 }
 
-function TypeBadge({ type }) {
-  const cfg = TYPE_CONFIG[type] ?? TYPE_CONFIG["Insurance"];
+function TypeBadge({ type }:{type:string | number}) {
+  const cfg = TYPE_CONFIG[type as keyof typeof TYPE_CONFIG] ?? TYPE_CONFIG["Insurance"];
   const Icon = cfg.icon;
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${cfg.cls}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${cfg.cls}`}
+    >
       <Icon size={11} />
       {type}
     </span>
   );
 }
 
-function StatusBadge({ status }) {
-  const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG.Paid;
+function StatusBadge({ status }: { status: string }) {
+  const cfg = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.Paid;
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${cfg.badge}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${cfg.badge}`}
+    >
       <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${cfg.dot}`} />
       {status}
     </span>
   );
 }
 
-function SortIcon({ colKey, sortCol, sortDir }) {
-  if (sortCol !== colKey) return <FiChevronUp size={12} className="opacity-30" />;
-  return sortDir === "asc"
-    ? <FiChevronUp size={12} className="text-violet-600" />
-    : <FiChevronDown size={12} className="text-violet-600" />;
+function SortIcon({ colKey, sortCol, sortDir }: { colKey: string; sortCol: string | null; sortDir: string }) {
+  if (sortCol !== colKey)
+    return <FiChevronUp size={12} className="opacity-30" />;
+  return sortDir === "asc" ? (
+    <FiChevronUp size={12} className="text-violet-600" />
+  ) : (
+    <FiChevronDown size={12} className="text-violet-600" />
+  );
 }
 
 export default function TransactionsTable() {
   const [activeFilter, setActiveFilter] = useState("All");
-  const [sortCol, setSortCol]   = useState(null);
-  const [sortDir, setSortDir]   = useState("asc");
-  const [search,  setSearch]    = useState("");
+  const [sortCol, setSortCol] = useState<string | null>(null);
+  const [sortDir, setSortDir] = useState("asc");
+  const [search, setSearch] = useState("");
 
   const filtered = ROWS.filter((r) => {
     const matchFilter = activeFilter === "All" || r.type === activeFilter;
-    const matchSearch  = search === "" ||
+    const matchSearch =
+      search === "" ||
       r.name.toLowerCase().includes(search.toLowerCase()) ||
       r.recipient.toLowerCase().includes(search.toLowerCase());
     return matchFilter && matchSearch;
@@ -116,25 +187,31 @@ export default function TransactionsTable() {
 
   const sorted = sortCol
     ? [...filtered].sort((a, b) => {
-        const va = a[sortCol] ?? "";
-        const vb = b[sortCol] ?? "";
-        return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+        const va = a[sortCol as keyof typeof a] ?? "";
+        const vb = b[sortCol as keyof typeof b] ?? "";
+        return sortDir === "asc" ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
       })
     : filtered;
 
-  const handleSort = (col) => {
+  const handleSort = (col: string) => {
     if (sortCol === col) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-    else { setSortCol(col); setSortDir("asc"); }
+    else {
+      setSortCol(col);
+      setSortDir("asc");
+    }
   };
 
   return (
     <div className="bg-[#eee8da] rounded-2xl border border-gray-100 shadow-sm overflow-hidden font-sans">
-
       {/* ── Top bar ── */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-gray-100">
         <div>
-          <h2 className="text-base font-semibold text-gray-900">Transactions</h2>
-          <p className="text-xs text-gray-400 mt-0.5">{sorted.length} records</p>
+          <h2 className="text-base font-semibold text-gray-900">
+            Transactions
+          </h2>
+          <p className="text-xs text-gray-400 mt-0.5">
+            {sorted.length} records
+          </p>
         </div>
 
         <div className="flex items-center flex-wrap gap-2">
@@ -191,7 +268,11 @@ export default function TransactionsTable() {
                 >
                   <span className="inline-flex items-center gap-1">
                     {label}
-                    <SortIcon colKey={key} sortCol={sortCol} sortDir={sortDir} />
+                    <SortIcon
+                      colKey={key}
+                      sortCol={sortCol}
+                      sortDir={sortDir}
+                    />
                   </span>
                 </th>
               ))}
